@@ -9,7 +9,7 @@ const initialState = {
 
 const mainreducer = (state = initialState, action) => {
   switch (action.type) {
-  
+
     //******users actions***********/
     case "SetUsersSearchTerm":
       return { ...state, searchTerm: action.searchTerm };
@@ -17,21 +17,26 @@ const mainreducer = (state = initialState, action) => {
     case "SetSelectedUsersId":
       return { ...state, selectedUserId: action.userId };
 
-      case "deleteUser":
-      var _users = state.users.filter(user=> user.id !== action.userId)
+    case "deleteUser":
+      var _users = state.users.filter(user => user.id !== action.userId)
+      var _todos = state.todos.filter(todo => todo.userId !== action.userId)
+      var _posts = state.posts.filter(post => post.userId !== action.userId)
+
       state.users = _users;
-      return {...state};
+      state.posts = _posts;
+      state.todos = _todos;
+      return { ...state };
 
-      case "addUser":
-       state.users.push(action.user);
-      return { ...state};
+    case "addUser":
+      state.users.push(action.user);
+      return { ...state };
 
-      case "updateUser":
+    case "updateUser":
       var userIndex = state.users.findIndex(user => {
         return user.id === action.user.id;
       });
       state.users[userIndex] = action.user;
-      return { ...state};
+      return { ...state };
 
 
     //******todos actions***********/
@@ -61,7 +66,7 @@ const mainreducer = (state = initialState, action) => {
     case "GetPostsFromServer":
       return { ...state, posts: action.posts };
     //************End of - fiil data from web service***********************/
-  
+
 
     default:
       return state;
